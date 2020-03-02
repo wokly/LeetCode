@@ -1,3 +1,6 @@
+import java.util.ArrayList;
+import java.util.List;
+
 public class ArrayProblem {
     /**
      *https://leetcode-cn.com/problems/container-with-most-water/
@@ -63,5 +66,45 @@ public class ArrayProblem {
             }
         }
         return water;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/generate-parentheses/
+     * 22. 括号生成
+     */
+    public List<String> generateParenthesis(int n) {
+        return generateParenthesis(n, n);
+    }
+
+    private List<String> generateParenthesis(int l, int r) {
+        List<String> result = new ArrayList<>();
+        if (l == 0) {
+            StringBuilder s = new StringBuilder();
+            for (int i = 0; i < r; i++) {
+                s.append(")");
+            }
+            result.add(s.toString());
+            return result;
+        } else {
+            List<String> result1 = generateParenthesis(l - 1, r);
+            for (String s : result1) {
+                result.add("(" + s);
+            }
+            if (l < r) {
+                List<String> result2 = generateParenthesis(l, r - 1);
+                for (String s : result2) {
+                    result.add(")" + s);
+                }
+            }
+        }
+        return result;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/find-first-and-last-position-of-element-in-sorted-array/
+     * 34. 在排序数组中查找元素的第一个和最后一个位置
+     */
+    public int[] searchRange(int[] nums, int target) {
+        return null;
     }
 }
