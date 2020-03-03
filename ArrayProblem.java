@@ -105,6 +105,65 @@ public class ArrayProblem {
      * 34. 在排序数组中查找元素的第一个和最后一个位置
      */
     public int[] searchRange(int[] nums, int target) {
-        return null;
+        int[] result = new int[2];
+        int l = 0;
+        int r = nums.length - 1;
+        int pos = (l + r) / 2;
+        if (nums[pos] > target) {
+            result[0] = findFirst(nums, l, pos, target);
+            result[1] = findLast(nums, l, pos, target);
+        }else if (nums[pos] < target) {
+            result[0] = findFirst(nums, pos, r, target);
+            result[1] = findLast(nums, pos, r, target);
+        }else {
+            result[0] = findFirst(nums, l, pos, target);
+            result[1] = findLast(nums, pos, r, target);
+        }
+        return result;
+    }
+
+    private int findLast(int[] nums, int l, int r, int target) {
+        if(l == r){
+            if (nums[r] == target) {
+                return r;
+            }else if (r > 0) {
+                if (nums[r - 1] == target) {
+                    return r - 1;
+                }else {
+                    return -1;
+                }
+            } else return -1;
+        } else if (l + 1 == r) {
+            return -1;
+        }else {
+            int pos = (l + r) / 2;
+            if (nums[pos] > target) {
+                return findLast(nums, l, pos, target);
+            }else {
+                return findLast(nums, pos, r, target);
+            }
+        }
+    }
+
+    private int findFirst(int[] nums, int l, int r, int target) {
+        if (l == r) {
+            if (nums[r] == target) {
+                return r;
+            } else if (nums[l + 1] == target) {
+                return l + 1;
+            } else {
+                return -1;
+            }
+
+        } else if (l + 1 == r) {
+            return -1;
+        } else {
+            int pos = (l + r) / 2;
+            if (nums[pos] < target) {
+                return findFirst(nums, l, pos, target);
+            } else {
+                return findFirst(nums, pos, r, target);
+            }
+        }
     }
 }
