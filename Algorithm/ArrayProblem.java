@@ -1,3 +1,5 @@
+package Algorithm;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -165,5 +167,113 @@ public class ArrayProblem {
                 return findFirst(nums, pos, r, target);
             }
         }
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/
+     * 51. 数组中的逆序对
+     */
+    public int reversePairs(int[] nums) {
+        int[] tmp = new int[nums.length];
+        return reversePairs(nums, 0, nums.length - 1,tmp);
+
+    }
+    public int reversePairs(int[] nums, int left, int right, int[] tmp){
+        int result = 0;
+        if(left>=right){
+            return result;
+        }
+        int half = (left + right) / 2;
+        result += reversePairs(nums, left, half, tmp);
+        result += reversePairs(nums, half + 1, right, tmp);
+        if(nums[half]<nums[half+1])
+            return result;
+        return result + merge(nums, left, half,right, tmp);
+
+}
+
+    private int merge(int[] nums, int left, int half,int right, int[] tmp) {
+        for (int i = left; i <=right; i++) {
+            tmp[i] = nums[i];
+        }
+        int result = 0;
+        int l = left;
+        int r = half + 1;
+        int i = left;
+        while (l <= half && r <= right) {
+            if (tmp[l] <= tmp[r]) {
+                nums[i++] = tmp[l++];
+            } else {
+                nums[i++] = tmp[r++];
+                result += half + 1 - l;
+
+            }
+        }
+        while (l <= half) {
+            nums[i++] = tmp[l++];
+
+        }
+        while (r <= right) {
+            nums[i++] = tmp[r++];
+        }
+
+        return result;
+    }
+
+    public void sort(int[] nums){
+        quickSort(nums, 0, nums.length-1);
+        for (int num : nums) {
+            System.out.println(num);
+        }
+    }
+
+    private void quickSort(int[] nums, int start, int end) {
+        if (start < end) {
+            int tmp = nums[start];
+            int l = start;
+            int r = end;
+            while (l < r) {
+                while (l < r && nums[r] >= tmp) {
+                    r--;
+                }
+                nums[l] = nums[r];
+                while ((l < r && nums[l] <= tmp)) {
+                    l++;
+                }
+                nums[r] = nums[l];
+            }
+            nums[l] = tmp;
+            quickSort(nums, start, l - 1);
+            quickSort(nums, l + 1, end);
+        }
+    }
+
+    private void quickSort1(int[] nums, int start, int end) {
+        if (start >= end)
+            return;
+        int mid = (nums[start] + nums[end]) / 2;
+        int l = start;
+        int r = end;
+        while (l <r) {
+            while (l <r && nums[l] <= mid ) {
+                l++;
+            }
+            while ((l <r &&nums[r] > mid) ) {
+                r--;
+            }
+            if (nums[l] > nums[r]) {
+                swap(nums, l, r);
+                l++;
+                r--;
+            }
+        }
+        quickSort1(nums, start, l - 1);
+        quickSort1(nums, l, end);
+    }
+
+    private void swap(int[] nums, int l, int r) {
+        int t = nums[l];
+        nums[l] = nums[r];
+        nums[r] = t;
     }
 }
