@@ -1,6 +1,8 @@
 package Algorithm;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ArrayProblem {
@@ -275,5 +277,83 @@ public class ArrayProblem {
         int t = nums[l];
         nums[l] = nums[r];
         nums[r] = t;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/3sum/
+     * 15. 三数之和
+     */
+    public List<List<Integer>> threeSum(int[] nums) {
+        List<List<Integer>> result = new LinkedList<>();
+        if (nums.length<3){
+            return result;
+        }
+        Arrays.sort(nums);
+        int i = 0,r, l,sum;
+        while (i<nums.length-2){
+            if(nums[i]>0)
+                break;
+            r = i + 1;
+            l = nums.length - 1;
+            while (r<l) {
+                sum = nums[i] + nums[r] + nums[l];
+                if (sum < 0) {
+                   r++;
+                   while (r<l && nums[r-1] == nums[r]) r++;
+                }else if(sum>0){
+                    l--;
+                    while (r<l && nums[l+1] == nums[l]) l--;
+                }else {
+                    LinkedList<Integer> t = new LinkedList<>();
+                    t.add(nums[i]);
+                    t.add(nums[r]);
+                    t.add(nums[l]);
+                    result.add(t);
+                    l--;
+                    r++;
+                    while (r<l && nums[r-1] == nums[r]) r++;
+                    while (r<l && nums[l+1] == nums[l]) l--;
+                }
+            }
+            i++;
+            while (i<nums.length-1 && nums[i-1] == nums[i]){
+                i++;
+            }
+        }
+        return result;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/longest-palindromic-substring/
+     * 5. 最长回文子串
+     */
+    public String longestPalindrome(String s) {
+        if (s == null || s.length() < 1)
+            return "";
+        int l1 = 0;
+        int l2 = 0;
+        int len = 0;
+        int start = 0;
+        int end = 0;
+        char[] c = s.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            l1 = expandAroundCenter(c, i, i);
+            l2 = expandAroundCenter(c, i, i + 1);
+            len = Math.max(l1, l2);
+            if (len > end - start) {
+                start = i - (len - 1) / 2;
+                end = i + (len) / 2;
+            }
+        }
+        return s.substring(start, end+1);
+    }
+
+    private int expandAroundCenter(char[] c, int r, int l) {
+        while (r>=0 && l<c.length && c[r] == c[l])
+        {
+            r--;
+            l++;
+        }
+        return l - r-1 ;
     }
 }
