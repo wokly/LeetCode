@@ -13,7 +13,8 @@ public class Main {
 
         //arrayProblem.sort(new int[]{2,54,74,123,546754,123,765,234,125,63,1,78,23,8,23});
         //arrayProblem.sort(new int[]{6,5,4,3,2,1});
-        String result = arrayProblem.longestPalindrome("babad");
-        System.out.println("result = " + result);
+
+        int intValue = arrayProblem.candy(new int[]{1,2,87,87,87,2,1});
+        System.out.println("intValue = " + intValue);
     }
 }

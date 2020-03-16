@@ -1,9 +1,6 @@
 package Algorithm;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.*;
 
 public class ArrayProblem {
     /**
@@ -355,5 +352,184 @@ public class ArrayProblem {
             l++;
         }
         return l - r-1 ;
+    }
+
+    /**https://leetcode-cn.com/problems/coin-change/
+     322. 零钱兑换
+     */
+    public int coinChange(int[] coins, int amount) {
+        int[] dp = new int[amount+1];
+        Arrays.fill(dp,amount+1);
+        dp[0] = 0;
+        for (int i = 0; i <= amount; i++) {
+            for (int coin : coins) {
+                if(coin<=i){
+                    dp[i] = Math.min(dp[i], dp[i - coin] + 1);
+                }
+            }
+        }
+        return dp[amount] > amount ? -1 : dp[amount];
+    }
+
+
+    class Interval {
+        int a;
+        int b;
+        Interval(int[] t){
+            a = t[0];
+            b = t[1];
+        }
+
+        int[] toArray(){
+            int[] t = new int[2];
+            t[0] = a;
+            t[1] = b;
+            return t;
+        }
+
+    }
+    public int[][] merge(int[][] intervals) {
+        if(intervals.length<1){
+            return intervals;
+        }
+        Arrays.sort(intervals, (Comparator.comparingInt(o -> o[0])));
+        LinkedList<int[]> tmp = new LinkedList<>();
+        tmp.add(intervals[0]);
+        for (int i = 1; i < intervals.length; i++) {
+            int[] t = tmp.getLast();
+            if (intervals[i ][0] <= t[1]) {
+                t[1] = Math.max(t[1], intervals[i][1]);
+            }else tmp.add(intervals[i]);
+        }
+        int[][] result = new int[tmp.size()][];
+        for (int i = 0; i < tmp.size(); i++) {
+            result[i] = tmp.get(i);
+        }
+        return result;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
+     * 215. 数组中的第K个最大元素
+     */
+    public int findKthLargest(int[] nums, int k) {
+        return nums[quickSortPos(nums, 0, nums.length - 1, k-1)];
+    }
+    int quickSortPos(int[] nums,int start,int end,int k){
+        int left = start;
+        int right = end;
+        int tmp = nums[left];
+        while (left<right){
+            while (left<right && nums[right]<=tmp){
+                right--;
+            }
+            nums[left] = nums[right];
+            while (left<right && nums[left]>=tmp){
+                left++;
+            }
+            nums[right] = nums[left];
+        }
+        nums[left] = tmp;
+        if(left == k) return left;
+        else if(left>k) return quickSortPos(nums, start, left - 1, k);
+        else return quickSortPos(nums, left + 1, end, k);
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/candy/
+     * 135. 分发糖果
+     */
+    public int candy(int[] ratings) {
+        int[] tmp = new int[ratings.length + 2];
+        tmp[0] = Integer.MAX_VALUE;
+        tmp[tmp.length - 1] = Integer.MAX_VALUE;
+        System.arraycopy(ratings, 0, tmp, 1, tmp.length - 1 - 1);
+        Arrays.fill(ratings,0);
+        for (int i = 1; i < tmp.length-1; i++) {
+            if (tmp[i] <= tmp[i - 1] && tmp[i] <= tmp[i + 1]) {
+                ratings[i-1] = 1;
+            }
+        }
+        tmp[0] = Integer.MIN_VALUE;
+        tmp[tmp.length - 1] = Integer.MIN_VALUE;
+        for (int i = 1; i < tmp.length-1; i++) {
+            if (ratings[i-1]!=1 && tmp[i] >= tmp[i - 1] && tmp[i] >= tmp[i + 1] ) {
+                ratings[i-1] = -1;
+            }
+        }
+        boolean start = false;
+        for (int i = 0; i < ratings.length; i++) {
+            if(ratings[i] == 1) {
+                start = true;
+            } else if(start){
+                if(ratings[i] == -1){
+                    start = false;
+                }
+                ratings[i] = ratings[i - 1] + 1;
+            }
+        }
+        start = false;
+        for (int i = ratings.length - 1; i >= 0; i--) {
+            if(ratings[i] == 1) {
+                start = true;
+            } else if(start){
+                if(ratings[i] == -1 || ratings[i]>1){
+                    start = false;
+                }
+                ratings[i] = Math.max(ratings[i], ratings[i + 1] + 1);
+            }
+        }
+        int sum = 0;
+        for (int rating : ratings) {
+            sum += rating;
+        }
+        return sum;
+    }
+
+// Definition for a Node.
+class Node {
+    int val;
+    Node next;
+    Node random;
+
+    public Node(int val) {
+        this.val = val;
+        this.next = null;
+        this.random = null;
+    }
+}
+
+    /**
+     * https://leetcode-cn.com/problems/copy-list-with-random-pointer/
+     * 138. 复制带随机指针的链表
+     */
+    public Node copyRandomList(Node head) {
+        Node t = head;
+        if(head == null)
+            return head;
+        while (t!=null){
+            Node copy = new Node(t.val);
+            copy.next = t.next;
+            t.next = copy;
+            t = copy.next;
+        }
+        t = head;
+        Node result = head.next;
+        while (t!=null){
+            Node t1 = t.next;
+            if(t.random!=null) {
+                t1.random = t.random.next;
+            }
+            t = t1.next;
+        }
+        t = head;
+        while (t!=null){
+            Node t1 = t.next;
+            t.next = t1.next;
+            t = t1.next;
+            if(t!=null)
+                t1.next = t.next;
+        }
+        return result;
     }
 }
