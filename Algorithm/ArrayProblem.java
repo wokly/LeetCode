@@ -532,4 +532,38 @@ class Node {
         }
         return result;
     }
+
+    /**
+     * https://leetcode-cn.com/problems/spiral-matrix/
+     * 54. 螺旋矩阵
+     */
+    public List<Integer> spiralOrder(int[][] matrix) {
+        List<Integer> result = new LinkedList<>();
+        int step = 0;
+        int m = matrix.length;
+        if (m == 0) {
+            return result;
+        }
+        int n = matrix[0].length;
+        while (m - 2 * step > 0 && n - 2 * step > 0) {
+            for (int i = step; i < n - step; i++) {
+                result.add(matrix[step][i]);
+            }
+            for (int i = step + 1; i < m - step; i++) {
+                result.add(matrix[i][n - step - 1]);
+            }
+            if (m > 2 * step + 1) {
+                for (int i = n - step - 2; i >= step; i--) {
+                    result.add(matrix[m - step - 1][i]);
+                }
+            }
+            if (n > 2 * step + 1) {
+                for (int i = m - step - 2; i > step; i--) {
+                    result.add(matrix[i][step]);
+                }
+            }
+            step++;
+        }
+        return result;
+    }
 }
