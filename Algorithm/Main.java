@@ -3,6 +3,7 @@ package Algorithm;
 public class Main {
     public static void main(String[] args) {
         ArrayProblem arrayProblem = new ArrayProblem();
+        NumberProblem numberProblem = new NumberProblem();
        /* List<String> result = arrayProblem.generateParenthesis(3);
         for (String s : result) {
             System.out.println("s = " + s);
@@ -14,7 +15,10 @@ public class Main {
         //arrayProblem.sort(new int[]{2,54,74,123,546754,123,765,234,125,63,1,78,23,8,23});
         //arrayProblem.sort(new int[]{6,5,4,3,2,1});
 
-        int intValue = arrayProblem.candy(new int[]{1,2,87,87,87,2,1});
+        // int intValue = arrayProblem.candy(new int[]{1,2,87,87,87,2,1});
+        int intValue = numberProblem.findKthNumber(10,3);
         System.out.println("intValue = " + intValue);
+
+
     }
 }
