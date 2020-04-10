@@ -5,6 +5,7 @@ import java.util.*;
 public class ArrayProblem {
     /**
      *https://leetcode-cn.com/problems/container-with-most-water/
+     * 两边同时向中间移动 长度更长再比较面积
      * 11. 盛最多水的容器
      */
     public int maxArea(int[] height) {
@@ -25,6 +26,7 @@ public class ArrayProblem {
     /**
      * https://leetcode-cn.com/problems/trapping-rain-water/
      * 42. 接雨水
+     * 两边同时向中间移动 长度更长？更新最长边： +边长差雨水
      */
     public int trap(int[] height) {
         int l = 0;
@@ -171,6 +173,7 @@ public class ArrayProblem {
     /**
      * https://leetcode-cn.com/problems/shu-zu-zhong-de-ni-xu-dui-lcof/
      * 51. 数组中的逆序对
+     * 归并排序时往前移动的数字次数和
      */
     public int reversePairs(int[] nums) {
         int[] tmp = new int[nums.length];
@@ -183,10 +186,13 @@ public class ArrayProblem {
             return result;
         }
         int half = (left + right) / 2;
+        //前半截
         result += reversePairs(nums, left, half, tmp);
+        //后半截
         result += reversePairs(nums, half + 1, right, tmp);
         if(nums[half]<nums[half+1])
             return result;
+        //合并
         return result + merge(nums, left, half,right, tmp);
 
 }
@@ -205,7 +211,6 @@ public class ArrayProblem {
             } else {
                 nums[i++] = tmp[r++];
                 result += half + 1 - l;
-
             }
         }
         while (l <= half) {
@@ -279,6 +284,8 @@ public class ArrayProblem {
     /**
      * https://leetcode-cn.com/problems/3sum/
      * 15. 三数之和
+     * 排序后 对每个nums[i] 找出 nums[i]+nums[l=i+1]+nums[r=length-1] == 的组合
+     * 双指针变量 <0则l++ >0则r--
      */
     public List<List<Integer>> threeSum(int[] nums) {
         List<List<Integer>> result = new LinkedList<>();
@@ -323,6 +330,7 @@ public class ArrayProblem {
     /**
      * https://leetcode-cn.com/problems/longest-palindromic-substring/
      * 5. 最长回文子串
+     * 每个点展开两次 （b[a]b 和b[a]ab两种情况） 判断最长回文长度
      */
     public String longestPalindrome(String s) {
         if (s == null || s.length() < 1)
@@ -355,7 +363,8 @@ public class ArrayProblem {
     }
 
     /**https://leetcode-cn.com/problems/coin-change/
-     322. 零钱兑换
+     * 322. 零钱兑换
+     * dp 从每个硬币单独值开始 计算最少次数加 能加的和是多少
      */
     public int coinChange(int[] coins, int amount) {
         int[] dp = new int[amount+1];
@@ -411,6 +420,7 @@ public class ArrayProblem {
     /**
      * https://leetcode-cn.com/problems/kth-largest-element-in-an-array/
      * 215. 数组中的第K个最大元素
+     * 快排
      */
     public int findKthLargest(int[] nums, int k) {
         return nums[quickSortPos(nums, 0, nums.length - 1, k-1)];
@@ -438,6 +448,7 @@ public class ArrayProblem {
     /**
      * https://leetcode-cn.com/problems/candy/
      * 135. 分发糖果
+     * 上升下降转折点最高最低
      */
     public int candy(int[] ratings) {
         int[] tmp = new int[ratings.length + 2];

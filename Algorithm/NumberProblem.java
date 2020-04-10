@@ -4,6 +4,7 @@ public class NumberProblem {
     /**
      * https://leetcode-cn.com/problems/k-th-smallest-in-lexicographical-order/
      * 440. 字典序的第K小数字
+     * 十叉树 算每个Node下有几个节点
      */
     public int findKthNumber(int n, int k) {
         //十叉树
