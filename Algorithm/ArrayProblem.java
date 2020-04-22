@@ -577,4 +577,38 @@ class Node {
         }
         return result;
     }
+
+    /**
+     * https://leetcode-cn.com/problems/find-all-duplicates-in-an-array/
+     * 442. 数组中重复的数据
+     */
+    public List<Integer> findDuplicates(int[] nums) {
+        List<Integer> result = new ArrayList<>();
+        int num ;
+        for (int i = 0; i < nums.length; i++) {
+            num = Math.abs(nums[i]);
+            if (nums[num - 1] > 0) {
+                nums[num - 1] *= -1;
+            } else {
+                result.add(num);
+            }
+        }
+        return result;
+    }
+
+    /**
+     * https://leetcode-cn.com/problems/shu-zu-zhong-zhong-fu-de-shu-zi-lcof/
+     * @面试题03. 数组中重复的数字
+     */
+    public int findRepeatNumber(int[] nums) {
+        for (int num : nums) {
+            num = Math.abs(num);
+            if (nums[num] < 0) {
+                return num;
+            } else {
+                nums[num] *= -1;
+            }
+        }
+        return 0;
+    }
 }
