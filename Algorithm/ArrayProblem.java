@@ -611,4 +611,76 @@ class Node {
         }
         return 0;
     }
+
+
+    /**
+     * https://leetcode.cn/problems/kth-largest-element-in-an-array/
+     * 215. 数组中的第K个最大元素
+     */
+
+    public int findKthLargest1(int[] nums, int k) {
+        return findKthLargest1(nums, 0, nums.length - 1, k-1);
+    }
+    public int findKthLargest1(int[] nums,int start,int end, int k) {
+        while (true) {
+            int pi = partition(nums, start, end);
+            if (pi == k) {
+                return nums[pi];
+            } else if (pi > k) {
+                end = pi - 1;
+            }else {
+                start = pi + 1;
+            }
+        }
+    }
+
+    private int partition(int[] nums, int start, int end) {
+        int pivot = nums[end];
+        int i = start - 1;
+        for (int j = start; j < end; j++) {
+            if (nums[j] > pivot) {
+                swap(nums, ++i, j);
+            }
+        }
+        swap(nums, ++i, end);
+        return i;
+    }
+
+    public int findKthLargest2(int[] nums, int k) {
+        int heapSize = nums.length;
+        buildBigHeap(nums, heapSize);
+        for (int i = 0; i < k - 1; i++) {
+            swap(nums, 0, heapSize - 1);
+            heapSize--;
+            maxHeap(nums, 0, heapSize);
+        }
+        return nums[0];
+    }
+
+    private void buildBigHeap(int[] nums, int heapSize) {
+        for (int i = (heapSize-2)/2; i >=0; --i) {
+            maxHeap(nums, i, heapSize);
+        }
+    }
+
+    private void maxHeap(int[] nums, int i, int heapSize) {
+        int l = i * 2 + 1, r = i * 2 + 2, largest = i;
+        if (l < heapSize && nums[l] > nums[largest]) {
+            largest = l;
+        }
+        if (r < heapSize && nums[r] > nums[largest]) {
+            largest = r;
+        }
+        if (largest != i) {
+            swap(nums, largest, i);
+            maxHeap(nums, largest, heapSize);
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] nums={5,2,4,1,3,6,0};
+        ArrayProblem arrayProblem = new ArrayProblem();
+        System.out.println("findKthLargest1 = " + arrayProblem.findKthLargest1(nums,4));
+    }
+
 }
